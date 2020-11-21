@@ -1,4 +1,3 @@
-import numpy as np
 import markovify
 import pronouncing
 import os
@@ -17,21 +16,11 @@ def clean_input(txt_file):
     return txt_file
 
 def markov_chain(txt_file):
-    #text = txt_file.split('\n') # breaks the file up by line
-    #text_list = re.split('\n', txt_file)
-    #text = ' '.join(text_list)
-    #print(text_list)
-    #print(txt_file)
     text_model = markovify.NewlineText(txt_file)
-
-    #new_sentence = text_model.make_sentence()
 
     return text_model
 
 def intersection(list_of_rhymes, end_words):
-    # Tokenizes txt file into words
-    #words_list = txt_file.split(" ")
-    
     # Gets all words that are in the lyrics and rhyme with the potential word
     return list(set(end_words).intersection(list_of_rhymes))
 
@@ -57,14 +46,11 @@ def generate_stanza(text_model, txt_file):
             # See if it rhymes with any other end word
             list_of_rhymes = pronouncing.rhymes(rhyme)
             intersect = intersection(list_of_rhymes, end_words)
-            print(intersect)
 
             # If theres a rhyme
-                # Set found_rhyme to true
-                # Get index of lines
             if intersect:
-                print("found rhyme")
                 found_rhyme = True
+                # Get index of lines
                 rhyme_index = end_words.index(intersect[0])
 
             # Put line and end word into containers
@@ -101,7 +87,6 @@ def generate_lyrics(text_model, txt_file):
 
     for i in range(num_bars):
         lines = generate_stanza(text_model, txt_file)
-        print(lines)
         for line in lines:
             fout.write(line)
             fout.write('\n')
@@ -114,7 +99,6 @@ def main():
 
     # Clean text from input file
     txt_file = clean_input(txt_file)
-    #print(intersection(['a', 'b', 'c'], ['v', 'c', 'd']))
 
     # Create Markov Chain with input txt file
     text_model = markov_chain(txt_file)
